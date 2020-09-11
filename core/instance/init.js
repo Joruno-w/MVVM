@@ -1,5 +1,5 @@
 import {constructorProxy} from "./proxy.js";
-import mount from "./mount.js";
+import {mount} from "./mount.js";
 let uid = 0;
 export function initMixin(Due) {
     Due.prototype._init = function (options) {
