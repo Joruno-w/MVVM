@@ -48,7 +48,7 @@ function analysisAttr(vm,elm,parent) {
     if (elm.nodeType === 1){
         let attrNames = elm.getAttributeNames();
         if (attrNames.indexOf("v-model") > -1){
-            vmodel(vm,elm,elm.getAttribute("v-model"));
+            vmodel(vm,elm,elm.getAttribute('v-model'));
         }
     }
 }
