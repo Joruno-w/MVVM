@@ -5,9 +5,13 @@
     <title>Title</title>
 </head>
 <body>
+    <div id="test">
+        你好，{{content}}<br/>
+        <span>{{description}}</span>
+    </div>
     <script type="module">
-        import Due from './core';
-        window.test = new Due({
+        import Due from './core/index.js';
+        window.vm = new Due({
            el: 'test',
            data: {
                content: 'wsl',
