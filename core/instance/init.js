@@ -7,7 +7,7 @@ export function initMixin(Due) {
         vm.isDue = true;
         //初始化data
         if (options && options.data){
-            vm._data = constructorProxy(vm,options.data);
+            vm._data = constructorProxy(vm,options.data,'');
         }
         //初始化created方法
         //初始化computed
