@@ -8,6 +8,15 @@ export function renderMixin(Due) {
     }
 }
 
+export function renderData(vm,data) {
+    let vnodes = template2Vnode.get(data);
+    if (vnodes != null){
+        for (let i = 0;i < vnodes.length;i ++){
+            renderNode(vm,vnodes[i]);
+        }
+    }
+}
+
 export function renderNode(vm,vnode) {
     if (vnode.nodeType === 3){
         let templates = vnode2Template.get(vnode);

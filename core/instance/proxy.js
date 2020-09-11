@@ -1,3 +1,5 @@
+import {renderData} from "./render.js";
+
 const arrayProto = Array.prototype;
 function defArrayFunc(obj,func,namespace,vm) {
     Object.defineProperty(obj,func,{
@@ -7,6 +9,7 @@ function defArrayFunc(obj,func,namespace,vm) {
            let origin = arrayProto[func];
            const result = origin.apply(this,args);
            console.log(getNamespace(namespace,''));
+           renderData(vm,getNamespace(namespace,prop));
            return result;
        }
     });
@@ -48,6 +51,7 @@ function constructorObjectProxy(vm,obj,namespace) {
             set(newValue) {
                 console.log(getNamespace(namespace,prop));
                 obj[prop] = newValue;
+                renderData(vm,getNamespace(namespace,prop));
             }
         });
         Object.defineProperty(vm,prop,{
@@ -58,6 +62,7 @@ function constructorObjectProxy(vm,obj,namespace) {
             set(newValue) {
                 console.log(getNamespace(namespace,prop));
                 obj[prop] = newValue;
+                renderData(vm,getNamespace(namespace,prop));
             }
         });
         if (obj[prop] instanceof Object){
