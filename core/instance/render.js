@@ -30,7 +30,17 @@ export function renderNode(vm,vnode) {
             }
             vnode.elm.nodeValue = result;
         }
-    }else{
+    }else if (vnode.nodeType === 1 && vnode.tag === 'INPUT'){
+        let templates = vnode2Template.get(vnode);
+        if (templates){
+            for (let i = 0;i < templates.length;i ++){
+                let templateValue = getTemplateValue([vm._data,vnode.env],templates[i]);
+                if (templateValue){
+                    vnode.elm.value = templateValue;
+                }
+            }
+        }
+    }else {
         for (let i = 0;i < vnode.children.length;i ++){
             renderNode(vm,vnode.children[i]);
         }
@@ -43,6 +53,7 @@ export function prepareRender(vm,vnode) {
     if (vnode.nodeType === 3){
         analysisTemplateString(vnode);
     }
+    analysisAttr(vm,vnode);
     if (vnode.nodeType === 1){
         for (let i = 0;i < vnode.children.length;i++){
             prepareRender(vm,vnode.children[i]);
@@ -102,4 +113,15 @@ function getTemplateValue(objs,templateName) {
         }
     }
     return null;
+}
+
+function analysisAttr(vm,vnode) {
+    if (vnode.nodeType !== 1){
+        return;
+    }
+    let attrNames = vnode.elm.getAttributeNames();
+    if (attrNames.indexOf("v-model") > -1){
+        setTemplate2Vnode(vnode.elm.getAttribute("v-model"),vnode);
+        setVnode2Template(vnode.elm.getAttribute("v-model"),vnode);
+    }
 }

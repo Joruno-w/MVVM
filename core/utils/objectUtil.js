@@ -13,3 +13,21 @@ export function getValue(obj,name) {
     }
     return temp;
 }
+
+export function setValue(obj,data,value) {
+    if (!obj){
+        return;
+    }
+    let attrList = data.split('.');
+    let temp = obj;
+    for (let i = 0;i < attrList.length;i ++){
+        if (temp[attrList[i]]){
+            temp = temp[attrList[i]];
+        }else{
+            return;
+        }
+    }
+    if (temp[attrList[attrList.length - 1]] != null){
+        temp[attrList[attrList.length - 1]] = value;
+    }
+}
