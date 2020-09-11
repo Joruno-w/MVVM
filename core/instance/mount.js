@@ -1,5 +1,6 @@
 import VNode from "../Vdom/vnode.js";
 import {prepareRender,getTemplate2VnodeMap, getVnode2TemplateMap} from "./render.js";
+import {vmodel} from "./grammar/vmodel.js";
 
 export function initMount(Due) {
     Due.prototype.$mount = function (el) {
@@ -15,6 +16,7 @@ export function mount(vm,elm) {
     prepareRender(vm,vm._vnode);
 }
 function constructVNode(vm,elm,parent) {//深度优先搜索
+    analysisAttr(vm,elm,parent);
     let vnode = null;
     let children = [];
     let text = getNodeText(elm);
@@ -39,5 +41,14 @@ function getNodeText(elm) {
         return elm.nodeValue;
     }else{
         return '';
+    }
+}
+
+function analysisAttr(vm,elm,parent) {
+    if (elm.nodeType === 1){
+        let attrNames = elm.getAttributeNames();
+        if (attrNames.indexOf("v-model") > -1){
+            vmodel(vm,elm,elm.getAttribute('v-model'));
+        }
     }
 }
