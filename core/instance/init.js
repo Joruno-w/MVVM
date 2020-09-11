@@ -1,4 +1,5 @@
 import {constructorProxy} from "./proxy.js";
+import mount from "./mount.js";
 let uid = 0;
 export function initMixin(Due) {
     Due.prototype._init = function (options) {
@@ -12,6 +13,10 @@ export function initMixin(Due) {
         //初始化created方法
         //初始化computed
         //初始化el并挂载
+        if (options && options.el){
+            const rootDom = document.getElementById(options.el);
+            mount(vm,rootDom);
+        }
     }
 }
 
