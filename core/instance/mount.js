@@ -1,6 +1,6 @@
 import VNode from "../Vdom/vnode.js";
 import {prepareRender,getTemplate2VnodeMap, getVnode2TemplateMap} from "./render.js";
-import {vmodel} from "./vmodel.js";
+import {vmodel} from "./grammar/vmodel.js";
 
 export function initMount(Due) {
     Due.prototype.$mount = function (el) {

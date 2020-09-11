@@ -1,4 +1,4 @@
-import {setValue} from "../utils/objectUtil.js";
+import {setValue} from "../../utils/objectUtil.js";
 
 export function vmodel(vm,elm,data) {
     elm.oninput = function (event) {
