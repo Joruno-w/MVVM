@@ -16,7 +16,7 @@
     <div id="test">
         <div>你好，{{content}},{{description}}</div>
         <div>{{description}}</div>
-        <input type="text" v-model="obj.x">{{obj.x}}
+        <input type="text" v-model="obj.x" v-on:keydown="enter">{{obj.x}}
         <ul>
             <li v-for="(item) in arr">{{item.name}},{{item.age}}</li>
         </ul>
@@ -45,7 +45,12 @@
                    }
                ],
                imgSrc: '1.jpg'
-           }
+           },
+            methods:{
+               enter(){
+                   console.log('hello',this);
+               }
+            }
         });
     </script>
 </body>

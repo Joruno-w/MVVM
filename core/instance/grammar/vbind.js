@@ -20,7 +20,6 @@ function vBind(vm,vnode,name,value) {
         let str = value.substring(1,value.length - 1).trim();
         let expressionList = str.split(",");
         let result = analysisExpression(vm,vnode,expressionList);
-        console.log(result);
         vnode.elm.setAttribute(k,result);
     }else{
         let v = getValue(vm._data,value);
