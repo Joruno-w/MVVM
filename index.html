@@ -12,6 +12,7 @@
         <ul>
             <li v-for="(item) in arr">{{item.name}},{{item.age}}</li>
         </ul>
+        <img v-bind:src="imgSrc" alt="">
     </div>
     <script type="module">
         import Due from './core/index.js';
@@ -33,7 +34,8 @@
                        name: 'zft',
                        age: 21
                    }
-               ]
+               ],
+               imgSrc: './1.jpg'
            }
         });
     </script>
