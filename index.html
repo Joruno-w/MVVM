@@ -21,7 +21,7 @@
             <li v-for="(item) in arr">{{item.name}},{{item.age}}</li>
         </ul>
         <img v-bind:src="imgSrc" alt="">
-        <div v-bind:class="{red: obj.x > 2,blue: obj.x < 2}"></div>
+        <div v-bind:class="{red: obj.x < 2,blue: obj.x > 2}">守望先锋</div>
     </div>
     <script type="module">
         import Due from './core/index.js';
