@@ -1,3 +1,4 @@
+let number = 0;
 export default class VNode{
     constructor(tag,elm,children,text,data,parent,nodeType) {
         this.tag = tag;
@@ -10,5 +11,6 @@ export default class VNode{
         this.env = {};
         this.instructions = null;
         this.template = [];
+        this.number = number++;
     }
 }

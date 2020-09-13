@@ -9,6 +9,9 @@
         <div>你好，{{content}},{{description}}</div>
         <div>{{description}}</div>
         <input type="text" v-model="obj.x">{{obj.x}}
+        <ul>
+            <li v-for="(item) in arr">{{item.name}},{{item.age}}</li>
+        </ul>
     </div>
     <script type="module">
         import Due from './core/index.js';

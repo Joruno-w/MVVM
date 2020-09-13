@@ -1,4 +1,5 @@
 import {renderData} from "./render.js";
+import {rebuild} from "./mount.js";
 
 const arrayProto = Array.prototype;
 function defArrayFunc(obj,func,namespace,vm) {
@@ -8,8 +9,9 @@ function defArrayFunc(obj,func,namespace,vm) {
        value(...args){
            let origin = arrayProto[func];
            const result = origin.apply(this,args);
-           console.log(getNamespace(namespace,''));
-           renderData(vm,getNamespace(namespace,prop));
+           console.log(getNamespace(namespace,""));
+           rebuild(vm,getNamespace(namespace,""))
+           renderData(vm,getNamespace(namespace,""));
            return result;
        }
     });
@@ -49,7 +51,6 @@ function constructorObjectProxy(vm,obj,namespace) {
                 return obj[prop];
             },
             set(newValue) {
-                console.log(getNamespace(namespace,prop));
                 obj[prop] = newValue;
                 renderData(vm,getNamespace(namespace,prop));
             }
@@ -60,7 +61,6 @@ function constructorObjectProxy(vm,obj,namespace) {
                 return obj[prop];
             },
             set(newValue) {
-                console.log(getNamespace(namespace,prop));
                 obj[prop] = newValue;
                 renderData(vm,getNamespace(namespace,prop));
             }
@@ -95,3 +95,4 @@ export function constructorProxy(vm,obj,namespace) { // vm表示Due对象，obj�
     }
     return proxyObj;
 }
+

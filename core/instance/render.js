@@ -53,11 +53,13 @@ export function prepareRender(vm,vnode) {
     if (vnode.nodeType === 3){
         analysisTemplateString(vnode);
     }
+    if (vnode.nodeType === 0){
+        setTemplate2Vnode(vnode.data,vnode);
+        setVnode2Template(vnode.data,vnode);
+    }
     analysisAttr(vm,vnode);
-    if (vnode.nodeType === 1){
-        for (let i = 0;i < vnode.children.length;i++){
-            prepareRender(vm,vnode.children[i]);
-        }
+    for (let i = 0;i < vnode.children.length;i++){
+        prepareRender(vm,vnode.children[i]);
     }
 }
 
@@ -90,7 +92,7 @@ function setVnode2Template(template,vnode) {
 
 function getTemplateName(template) {
     //判断是否有花括号，如果有就去掉，如果没有就直接返回
-    if (template.substring(0,2) === "{{" && template.substring(template.length - 2,template.length) === "}}"){
+    if (template.slice(0,2) === "{{" && template.slice(template.length - 2,template.length) === "}}"){
         return template.substring(2,template.length - 2);
     }else{
         return template;
@@ -124,4 +126,13 @@ function analysisAttr(vm,vnode) {
         setTemplate2Vnode(vnode.elm.getAttribute("v-model"),vnode);
         setVnode2Template(vnode.elm.getAttribute("v-model"),vnode);
     }
+}
+
+export function getVNodeTemplate(template) {
+    return template2Vnode.get(template);
+}
+
+export function clearMap() {
+    template2Vnode.clear();
+    vnode2Template.clear();
 }

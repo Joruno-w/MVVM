@@ -1,6 +1,8 @@
 import VNode from "../Vdom/vnode.js";
-import {prepareRender,getTemplate2VnodeMap, getVnode2TemplateMap} from "./render.js";
+import {prepareRender,getTemplate2VnodeMap, getVnode2TemplateMap,getVNodeTemplate,clearMap} from "./render.js";
 import {vmodel} from "./grammar/vmodel.js";
+import {mergeAttr} from "../utils/objectUtil.js";
+import {vforInit} from "./grammar/vfor.js";
 
 export function initMount(Due) {
     Due.prototype.$mount = function (el) {
@@ -16,21 +18,28 @@ export function mount(vm,elm) {
     prepareRender(vm,vm._vnode);
 }
 function constructVNode(vm,elm,parent) {//深度优先搜索
-    analysisAttr(vm,elm,parent);
-    let vnode = null;
-    let children = [];
-    let text = getNodeText(elm);
-    let data = null;
-    let nodeType = elm.nodeType;
-    let tag = elm.nodeName;
-    vnode = new VNode(tag,elm,children,text,data,parent,nodeType);
-    let childs = vnode.elm.childNodes;
-    for (let i = 0;i < childs.length; i++){
+    let vnode = analysisAttr(vm,elm,parent);
+    if (vnode == null){
+        let children = [];
+        let text = getNodeText(elm);
+        let data = null;
+        let nodeType = elm.nodeType;
+        let tag = elm.nodeName;
+        vnode = new VNode(tag,elm,children,text,data,parent,nodeType);
+        if (elm.nodeType === 1 && elm.getAttribute("env")){
+            vnode.env = mergeAttr(vnode.env,JSON.parse(elm.getAttribute("env")));
+        }else{
+            vnode.env = mergeAttr(vnode.env,parent?parent.env:{});
+        }
+    }
+    const childs = vnode.nodeType === 0? vnode.parent.elm.childNodes:vnode.elm.childNodes;
+    const len = vnode.nodeType === 0? vnode.parent.elm.childNodes.length : vnode.elm.childNodes.length;
+    for (let i = 0;i < len; i++){
         let childNodes = constructVNode(vm,childs[i],vnode);
         if(childNodes instanceof VNode){
             vnode.children.push(childNodes);
         }else{
-            vnode.children = [...vnode.children,...childNodes];
+            vnode.children = vnode.children.concat(childNodes);
         }
     }
     return vnode;
@@ -50,5 +59,21 @@ function analysisAttr(vm,elm,parent) {
         if (attrNames.indexOf("v-model") > -1){
             vmodel(vm,elm,elm.getAttribute('v-model'));
         }
+        if (attrNames.indexOf("v-for") > -1){
+           return vforInit(vm,elm,parent,elm.getAttribute("v-for"));
+        }
+    }
+}
+
+
+export function rebuild(vm,template) {
+    let virtualNode = getVNodeTemplate(template);
+    for (let i = 0;i < virtualNode.length;i ++){
+        virtualNode[i].parent.elm.innerHTML = '';
+        virtualNode[i].parent.elm.appendChild(virtualNode[i].elm);
+        let result = constructVNode(vm,virtualNode[i].elm,virtualNode[i].parent);
+        virtualNode[i].parent.children = [result];
+        clearMap();
+        prepareRender(vm,vm._vnode);
     }
 }
