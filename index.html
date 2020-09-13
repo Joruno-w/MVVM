@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .red{
+            color: red;
+        }
+        .blue{
+            color: blue;
+        }
+    </style>
 </head>
 <body>
     <div id="test">
@@ -13,6 +21,7 @@
             <li v-for="(item) in arr">{{item.name}},{{item.age}}</li>
         </ul>
         <img v-bind:src="imgSrc" alt="">
+        <div v-bind:class="{red: obj.x > 2,blue: obj.x < 2}"></div>
     </div>
     <script type="module">
         import Due from './core/index.js';
@@ -35,7 +44,7 @@
                        age: 21
                    }
                ],
-               imgSrc: './1.jpg'
+               imgSrc: '1.jpg'
            }
         });
     </script>

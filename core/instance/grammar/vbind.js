@@ -1,4 +1,4 @@
-import {getValue} from "../../utils/objectUtil.js";
+import {getValue,getEnvAttr} from "../../utils/objectUtil.js";
 
 export function checkVBind(vm,vnode) {
     if (vnode.nodeType !== 1){
@@ -14,6 +14,21 @@ export function checkVBind(vm,vnode) {
 
 function vBind(vm,vnode,name,value) {
     let k = name.split(':')[1];
-    let v = getValue(vm._data,value);
-    vnode.elm.setAttribute(k,v);
+    if(/^{[\w\W]+}$/g.test(value)){
+        let str = value.substring(1,value.length - 1).trim();
+        let expressionList = str.split(".");
+        let result = analysisExpression(vm,vnode,expressionList);
+        vnode.elm.setAttribute(k,result);
+    }else{
+        let v = getValue(vm._data,value);
+        vnode.elm.setAttribute(k,v);
+    }
+}
+
+function analysisExpression(vm,vnode,expressionList) {
+    //获取当前的环境变量
+    let attr = getEnvAttr(vm,vnode);
+    //判断表达式是否成立
+    // let code = generateCode(attr);
+    //拼组result
 }
