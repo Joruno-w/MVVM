@@ -11,6 +11,9 @@ export function initMixin(Due) {
             vm._data = constructorProxy(vm,options.data,'');
         }
         //初始化created方法
+        if (options && options.created){
+            vm._created = options.created;
+        }
         //初始化methods
         if (options && options.methods){
             vm._methods = options.methods;
@@ -19,6 +22,9 @@ export function initMixin(Due) {
             }
         }
         //初始化computed
+        if (options && options.computed){
+            vm._computed = options.computed;
+        }
         //初始化el并挂载
         if (options && options.el){
             const rootDom = document.getElementById(options.el);
